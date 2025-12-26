@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Orders</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <h1>Orders</h1>
+    <h3>User ID: <span th:text="${userId}"></span></h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.totalPrice}"></td>
+                <td th:text="${order.status}"></td>
+                <td>
+                    <a th:href="@{'/initiate-payment?orderId=' + ${order.id}}">Initiate Payment</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

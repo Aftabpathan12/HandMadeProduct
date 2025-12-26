@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Navbar</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- navbar.html fragment -->
+<div th:fragment="navbar">
+
+<nav class="navbar navbar-expand-lg px-3"
+     style="background-color:#618685; border-bottom:3px solid #d7ccc8;">
+
+  <div class="container-fluid">
+
+    <!-- Brand -->
+    <div class="d-flex align-items-center">
+      <div class="me-3"
+           style="width:50px;height:50px;background:#ffb74d;
+           border-radius:50%;display:flex;align-items:center;
+           justify-content:center;box-shadow:0 3px 6px rgba(0,0,0,0.2);">
+        <i class="fas fa-hands text-white fs-4"></i>
+      </div>
+
+      <div>
+        <a class="navbar-brand fw-bold mb-0" href="/Dashboard"
+           style="color:#fff8e1;text-decoration:none;font-size:1.4rem;">
+          HandMade Products
+        </a>
+        <div class="text-white" style="font-size:0.75rem;font-weight:300;">
+          <i class="fas fa-star text-warning me-1"></i>
+          Authentic Crafts Curated with Love
+        </div>
+      </div>
+    </div>
+
+    <!-- Toggle -->
+    <button class="navbar-toggler border-white" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation -->
+    <div class="collapse navbar-collapse" id="mainNav">
+
+      <!-- Center Links -->
+      <div class="navbar-nav mx-auto">
+        <a class="nav-link mx-2 text-white" href="/Dashboard">
+          <i class="fas fa-home me-1"></i> Home
+        </a>
+        <a class="nav-link mx-2 text-white" href="/contact">
+          <i class="fas fa-envelope me-1"></i> Contact
+        </a>
+      </div>
+
+      <!-- Search -->
+      <form class="d-flex me-3" action="/product/search" method="GET">
+        <div class="input-group shadow-sm" style="width:250px;">
+          <input type="search" class="form-control border-0"
+                 placeholder="Type here to search..." name="searchdata">
+          <button class="btn btn-warning border-0">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+
+      <!-- User + Time -->
+      <div class="navbar-nav align-items-center">
+
+        <!-- Real Time -->
+        <div class="me-3 text-warning"
+             style="font-family:monospace;background:rgba(0,0,0,0.1);
+             padding:5px 10px;border-radius:5px;">
+          <i class="fas fa-clock me-1"></i>
+          <span id="dateTime">Loading...</span>
+        </div>
+
+        <!-- User -->
+        <div class="me-3 text-white">
+          <i class="fas fa-user-circle me-1"></i>
+          <span th:text="${username}">User</span>
+        </div>
+
+        <!-- Logout -->
+        <a class="text-danger" href="/logout" title="Logout">
+          <i class="fas fa-sign-out-alt fs-5"></i>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</nav>
+</div>
+
+</body>
+</html>

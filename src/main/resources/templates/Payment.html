@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Secure Payment</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    
+<style>
+/* ===== FIX FOOTER & LAYOUT ===== */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    font-family: "Segoe UI", sans-serif;
+}
+
+.section-bg {
+    flex: 1;
+    background: linear-gradient(135deg, #fefefe, #f1f5f9);
+}
+
+/* ===== UI STYLES ===== */
+.card {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+h4, h5 {
+    font-weight: 600;
+}
+
+.payment-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-card:hover {
+    transform: scale(1.02);
+    border-color: #28a745;
+}
+
+.payment-card.active {
+    border: 2px solid #28a745;
+    background-color: #f3fff6;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+    border-radius: 30px;
+    padding: 12px;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #20c997, #28a745);
+    transform: translateY(-2px);
+}
+
+.summary-box {
+    background: #ffffff;
+    border-radius: 14px;
+}
+
+.text-success {
+    font-weight: 700;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div th:insert="navbar :: navbar"></div>
+
+<!-- PAYMENT SECTION -->
+<section class="section-bg py-5">
+  <div class="container">
+    <div class="card p-4">
+      <div class="row">
+
+        <!-- LEFT -->
+        <div class="col-md-7">
+          <h5 class="mb-3">✔ Secure Payment</h5>
+
+          <h4 class="text-success mb-1" th:text="${orderamount}"></h4>
+          <p class="text-muted">Handmade Product Checkout</p>
+
+          <hr>
+
+          <h6>Select Payment Method</h6>
+
+          <!-- VISA -->
+          <div class="payment-card border rounded p-3 d-flex align-items-center mb-3 active">
+            <input type="radio" name="payment" checked class="me-3">
+            <i class="fab fa-cc-visa fa-2x text-primary me-3"></i>
+            <span>Visa Debit Card</span>
+            <span class="ms-auto">**** 3456</span>
+          </div>
+
+          <!-- MASTER -->
+          <div class="payment-card border rounded p-3 d-flex align-items-center mb-3">
+            <input type="radio" name="payment" class="me-3">
+            <i class="fab fa-cc-mastercard fa-2x text-danger me-3"></i>
+            <span>Master Card</span>
+            <span class="ms-auto">**** 1038</span>
+          </div>
+
+          <!-- FORM -->
+          <form action="/finalpayment" method="POST">
+            <input type="hidden" name="OrderAmount" th:value="${orderamount}">
+            <input type="hidden" name="username" th:value="${username}">
+            <input type="hidden" name="orderID" th:value="${orderid}">
+
+            <button class="btn btn-primary w-100 mt-4">
+              Proceed to Payment
+            </button>
+          </form>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="col-md-5">
+          <div class="summary-box p-4 mt-4 mt-md-0">
+            <h6>Order Summary</h6>
+            <hr>
+
+            <div class="d-flex justify-content-between">
+              <span>Tax</span>
+              <span>Rs. 0</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Delivery</span>
+              <span>Rs. 0</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Convenience Fee</span>
+              <span>Rs. 0</span>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between">
+              <b>Total</b>
+              <b class="text-success" th:text="${orderamount}"></b>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER (UNCHANGED) -->
+
+ <div th:insert="footer :: Footer"></div>
+<!-- JS -->
+<script>
+function updateDateTime() {
+  const el = document.getElementById("dateTime");
+  if (!el) return;
+
+  const d = new Date();
+  let h = d.getHours(), m = d.getMinutes();
+  let ap = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  m = m < 10 ? "0" + m : m;
+
+  el.innerText = `${h}:${m} ${ap} ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+
+document.querySelectorAll(".payment-card").forEach(card => {
+  card.addEventListener("click", () => {
+    document.querySelectorAll(".payment-card").forEach(c => c.classList.remove("active"));
+    card.classList.add("active");
+    card.querySelector("input").checked = true;
+  });
+});
+</script>
+
+</body>
+</html>
